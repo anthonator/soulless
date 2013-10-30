@@ -5,7 +5,7 @@ gemspec
 
 rails_version = case ENV['RAILS_VERSION'] || 'default'
 when 'master'
-  { github: 'rails/rails' }
+  { git: 'rails/rails' }
 when 'default'
   '~> 4.0'
 else
