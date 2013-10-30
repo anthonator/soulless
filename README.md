@@ -84,9 +84,9 @@ class UserSignupForm
 end
 ```
 
-### Rails not required!
+### Batteries included...
 
-The great thing about Soulless? Batteries are included. Rails not required.
+The great thing about Soulless? Rails isn't required.
 
 ### This looks familir...
 
