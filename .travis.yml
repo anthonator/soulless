@@ -6,3 +6,7 @@ rvm:
   - jruby-19mode
   - jruby-head
   - rbx-19mode
+env:
+  - "RAILS_VERSION=3.2.0"
+  - "RAILS_VERSION=4.0.0"
+  - "RAILS_VERSION=master"
