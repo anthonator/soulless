@@ -9,3 +9,4 @@ rvm:
 matrix:
   allow_failures:
     - rvm: jruby-19mode
+# Force travis to recognize me!
