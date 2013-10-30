@@ -23,7 +23,7 @@ Or install it yourself as:
 
 ## Usage
 
-Just define a plain-old-ruby-object and get crackin'!
+Just define a plain-old-ruby-object, include Soulless and get crackin'!
 
 ```ruby
 class UserSignupForm
@@ -31,7 +31,7 @@ class UserSignupForm
   
   attribute :email, String
   attribute :name, String
-  attribute :password
+  attribute :password, String
   attribute :super_awesome, Boolean, default: false
   
   validates :email, presence: true
@@ -44,7 +44,7 @@ class UserSignupForm
   private
   def persist!
     # You're gonna need this!
-	# Define what to do with this form when ready to save here.
+	  # Define what to do with this form when ready to save here.
   end
 end
 ```
@@ -91,7 +91,7 @@ end
 
 The great thing about Soulless? Rails isn't required.
 
-### This looks familir...
+### This looks familiar...
 
 You noticed? We're using Virtus to power this gem. That means you get all the Virtus goodies for free. Check out [their GitHub page](https://github.com/solnic/virtus) to see what's up.
 
