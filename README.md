@@ -99,3 +99,10 @@ You noticed? We're using Virtus to power this gem. That means you get all the Vi
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request
+
+## Credits
+[![Sticksnleaves](http://sticksnleaves-wordpress.herokuapp.com/wp-content/themes/sticksnleaves/images/snl-logo-116x116.png)](http://www.sticksnleaves.com)
+
+Soulless is maintained and funded by [Sticksnleaves](http://www.sticksnleaves.com)
+
+Thanks to all of our [contributors](https://github.com/anthonator/soulless/graphs/contributors)
