@@ -2,6 +2,9 @@
 
 Rails models without the database (and Rails).
 
+[![Build Status](https://travis-ci.org/anthonator/soulless.png?branch=master)](https://travis-ci.org/anthonator/soulless) [![Dependency Status](https://gemnasium.com/anthonator/soulless.png)](https://gemnasium.com/anthonator/soulless)
+ [![Coverage Status](https://coveralls.io/repos/anthonator/soulless/badge.png?branch=master)](https://coveralls.io/r/anthonator/soulless?branch=master) [![Code Climate](https://codeclimate.com/github/anthonator/soulless.png)](https://codeclimate.com/github/anthonator/soulless)
+
 Great for implementing the form object pattern. [Check out #3](http://blog.codeclimate.com/blog/2012/10/17/7-ways-to-decompose-fat-activerecord-models/) of this great article by @brynary for more information on the form object pattern.
 
 ## Installation
