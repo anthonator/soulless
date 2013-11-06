@@ -15,6 +15,7 @@ require 'active_model/conversion'
 
 require 'soulless/model'
 require 'soulless/associations'
+require 'soulless/validations/uniqueness_validator'
 require 'soulless/version'
 
 module Soulless
@@ -26,6 +27,7 @@ module Soulless
       object.send(:include, Virtus.model(options))
       object.send(:include, Model)
       object.send(:include, Associations)
+      object.send(:include, Validations)
     end
     mod
   end
