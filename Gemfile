@@ -12,9 +12,12 @@ else
   "~> #{ENV['RAILS_VERSION']}"
 end
 
-gem 'activesupport', rails_version
-gem 'activemodel', rails_version
+gem 'rails', rails_version
 
-group :development do
-  gem 'coveralls', require: false
+platforms :ruby do
+  gem 'sqlite3'
+end
+
+platforms :jruby do
+  gem "activerecord-jdbcsqlite3-adapter"
 end
