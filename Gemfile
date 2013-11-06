@@ -16,12 +16,5 @@ gem 'activesupport', rails_version
 gem 'activemodel', rails_version
 
 group :development do
-  gem 'bundler'
   gem 'coveralls', require: false
-  gem 'rake'
-end
-
-group :test do
-  gem 'rspec'
-  gem 'simplecov'
 end

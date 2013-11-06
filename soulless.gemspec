@@ -8,7 +8,7 @@ Gem::Specification.new do |spec|
   spec.version       = Soulless::VERSION
   spec.authors       = ['Anthony Smith']
   spec.email         = ['anthony@sticksnleaves.com']
-  spec.description   = %q{Models without a soul.}
+  spec.description   = %q{Rails models without a database (and Rails).}
   spec.summary       = %q{Create Rails style models without the database.}
   spec.homepage      = ''
   spec.license       = 'MIT'
@@ -22,6 +22,7 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency 'activemodel', '>= 3.2'
   spec.add_runtime_dependency 'virtus', '>= 1.0'
 
-  spec.add_development_dependency 'bundler', '~> 1.3'
+  spec.add_development_dependency 'bundler'
   spec.add_development_dependency 'rake'
+  spec.add_development_dependency 'rspec'
 end
