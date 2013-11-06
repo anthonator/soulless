@@ -3,8 +3,9 @@ module Soulless
     def self.included(base)
       base.class_eval do
         extend ActiveModel::Naming
-        include ActiveModel::Conversion
+        extend ActiveModel::Translation
         include ActiveModel::Validations
+        include ActiveModel::Conversion
         
         def persisted?
           false

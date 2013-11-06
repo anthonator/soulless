@@ -1,0 +1,8 @@
+en:
+  activemodel:
+    errors:
+      models:
+        dummy_class/dummy_clone:
+          attributes:
+            name:
+              blank: this is a test
