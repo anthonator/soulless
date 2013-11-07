@@ -7,15 +7,21 @@ class DummyAssociation
   
   has_one :spouse do
     attribute :name, String
+    
+    validates :name, presence: true
   end
   
   has_many :friends do
     attribute :name, String
+    
+    validates :name, presence: true
   end
   
   has_one :dummy_clone, DummyClass
   
   has_many :dummy_clones, DummyClass
+  
+  validates_associated :spouse, :friends
   
   private
   def persist!

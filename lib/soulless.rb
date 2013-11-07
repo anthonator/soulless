@@ -1,5 +1,6 @@
 require 'virtus'
 require 'securerandom'
+require 'active_support/core_ext/array/wrap'
 require 'active_support/core_ext/class/attribute'
 require 'active_support/core_ext/module/delegation'
 require 'active_support/callbacks'
@@ -16,7 +17,7 @@ require 'active_model/version'
 
 require 'soulless/model'
 require 'soulless/associations'
-require 'soulless/validations/uniqueness_validator'
+require 'soulless/validations'
 require 'soulless/version'
 
 module Soulless
