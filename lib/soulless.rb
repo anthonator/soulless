@@ -12,6 +12,7 @@ require 'active_model/validator'
 require 'active_model/errors'
 require 'active_model/validations'
 require 'active_model/conversion'
+require 'active_model/version'
 
 require 'soulless/model'
 require 'soulless/associations'

@@ -5,7 +5,8 @@ module Soulless
         raise 'ActiveRecord is not defined. The Soulless uniqueness validator cannot be used when ActiveRecord is not present.' unless Object.const_defined?('ActiveRecord')
         @model = options[:model]
         @attribute = options[:attribute]
-        @validator = ActiveRecord::Validations::UniquenessValidator.new(options.merge(class: @model))
+        option.merge!(class: @model) if ActiveModel::VERSION::STRING >= '4.1.0'
+        @validator = ActiveRecord::Validations::UniquenessValidator.new(options)
         super(options)
       end
       
@@ -18,7 +19,7 @@ module Soulless
           attribute = @attribute if @attribute
           record = @model.new(attribute => value)
           
-          @validator.setup(@model)
+          @validator.setup(@model) if ActiveModel::VERSION::STRING < '4.1'
           @validator.validate_each(record, attribute, value)
           
           if record.errors.any?
