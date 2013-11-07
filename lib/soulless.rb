@@ -19,7 +19,7 @@ require 'soulless/validations/uniqueness_validator'
 require 'soulless/version'
 
 module Soulless
-  I18n.load_path += Dir.glob(Gem::Specification.find_by_name('activemodel').gem_dir + '/lib/active_model/locale/*.{rb,yml}')
+  I18n.load_path += Dir.glob('lib/soulless/locale/*.{rb,yml}')
   
   def self.model(options = {})
     mod = Module.new
