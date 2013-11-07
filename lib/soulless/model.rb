@@ -7,6 +7,12 @@ module Soulless
         include ActiveModel::Validations
         include ActiveModel::Conversion
         
+        class << self
+          def i18n_scope
+            :soulless
+          end
+        end
+        
         def persisted?
           false
         end

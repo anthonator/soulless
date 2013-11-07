@@ -1,5 +1,5 @@
 en:
-  activemodel:
+  soulless:
     errors:
       models:
         dummy_association/dummy_clone:
