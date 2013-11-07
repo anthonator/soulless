@@ -27,11 +27,11 @@ module Soulless
           end
         end
       end
-      
-      module ClassMethods
-        def validates_uniqueness_of(*attr_name)
-          validates_with UniquenessValidator, _merge_attributes(attr_name)
-        end
+    end
+    
+    module ClassMethods
+      def validates_uniqueness_of(*attr_name)
+        validates_with(UniquenessValidator, _merge_attributes(attr_name))
       end
     end
   end
