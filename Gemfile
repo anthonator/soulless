@@ -21,3 +21,7 @@ end
 platforms :jruby do
   gem "activerecord-jdbcsqlite3-adapter"
 end
+
+group :development do
+  gem 'coveralls', require: false
+end
