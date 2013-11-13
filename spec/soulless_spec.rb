@@ -16,6 +16,11 @@ describe Soulless do
     @dummy_class.saved.should be_true
   end
   
+  it 'should call #persist! when #update_attributes is called' do
+    @dummy_class.update_attributes(name: 'Biff')
+    @dummy_class.saved.should be_true
+  end
+  
   it 'should not call #persist! if attributes are invalid' do
     @dummy_class.name = nil
     @dummy_class.save.should be_false
