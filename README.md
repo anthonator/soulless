@@ -183,6 +183,22 @@ class Person
 end
 ```
 
+Your association has access to it's ```parent``` object as well.
+
+```ruby
+class Person
+  include Soulless.model
+  
+  attribute :name, String
+  
+  validates :name, presence: true
+  
+  has_one :children do
+    attribute :name, String, default: lambda { "#{parent.name} Jr." }
+  end
+end
+```
+
 When you need to make sure an association is valid before processing the object use ```validates_associated```.
 
 ```ruby
@@ -195,6 +211,8 @@ class Person
     
     validates :name, presence: true
   end
+  
+  validates_associated :spouse
   
   ...
   
