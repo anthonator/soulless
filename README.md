@@ -46,59 +46,6 @@ class UserSignupForm
 end
 ```
 
-### Default Values
-
-When defining attributes it's possible to specify default values.
-
-```ruby
-class UserSignupForm
-
-  ...
-  
-  attribute :name, String, default: 'Anthony'
-  
-  ...
-end
-```
-
-### Embedded Values
-
-It's possible to use other Soulless objects as attribute types.
-
-```ruby
-class User
-  include Soulless.model
-
-  attribute :name, String
-  attribute :email, String
-  attribute :password, String
-end
-
-class UserSignupForm
-  include Soulless.model
-  
-  attribute :user, User
-end
-```
-
-### Collection Coercions
-
-Define collections with specific types.
-
-```ruby
-class PhoneNumber
-  include Soulless.model
-  
-  attribute :number, String
-end
-
-class Person
-  include Soulless.model
-  
-  attribute :phone_numbers, Array[PhoneNumber]
-end
-```
-
 ### Processing an Object
 
 Soulless let's _you_ define what happens when your object is ready to be processed.
@@ -258,6 +205,34 @@ person.spouse = { name: nil }
 person.valid? # => false
 person.errors[:spouse] # => ["is invalid"]
 person.spouse.errors[:name] # => ["can't be blank"]
+```
+
+### Dirty Attributes
+
+Dirty attribute allow you to track changes to a Soulless object before it's saved.
+
+```ruby
+person = Person.name(name: "Anthony", spouse: { name: "Mary Jane Watson" })
+person.name = 'Peter Parker'
+person.changed? # => true
+person.changed # => ["name"]
+person.changes # => { name: ["Anthony", "Peter Parker"] }
+person.name_changed? # => true
+person.name_was # => "Anthony"
+person.name_change # => ["Anthony", "Peter Parker"]
+```
+
+Works on ```has_one``` and ```has_many``` too.
+
+```ruby
+person.spouse.name = 'Gwen Stacy'
+person.spouse.changed? # => true
+person.spouse.changed # => ["name"]
+person.spouse.changes # => { name: ["Mary Jane Watson", "Gwen Stacy"] }
+person.spouse.name_changed? # => true
+person.spouse.name_was # => "Mary Jane Watson"
+person.spouse.name_change # => ["Mary Jane Watson", "Gwen Stacy"]
+person.changed? # => false
 ```
 
 ### I18n
