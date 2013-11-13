@@ -25,8 +25,8 @@ module Soulless
     
     def define_writer(attribute)
       self.class.send(:define_method, "#{attribute}=".to_sym) do |value|
-        super(value)
         define_dirty_writer(attribute, value)
+        super(value)
         define_association_writer(attribute)
       end
     end
