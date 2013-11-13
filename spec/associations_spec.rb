@@ -29,6 +29,16 @@ describe Soulless::Associations do
       @dummy_class.dummy_clone.save
       @dummy_class.dummy_clone.errors[:name][0].should == 'this is a test'
     end
+    
+    it 'should have a parent assigned during initialization' do
+      @dummy_class = DummyAssociation.new(spouse: { name: 'Megan' })
+      @dummy_class.spouse.parent.should == @dummy_class
+    end
+    
+    it 'should have a parent assigned when set after initialization' do
+      @dummy_class.spouse = { name: 'Megan' }
+      @dummy_class.spouse.parent.should == @dummy_class
+    end
   end
   
   describe 'has_many' do
@@ -40,6 +50,16 @@ describe Soulless::Associations do
     it 'should allow a class type to be defined' do
       @dummy_class.dummy_clones = [{ name: 'Biff' }]
       @dummy_class.dummy_clones[0].class.name.should match(/\ADummyAssociation::DummyClone/)
+    end
+    
+    it 'should have a parent assigned during initialization' do
+      @dummy_class = DummyAssociation.new(friends: [{ name: 'Yaw' }])
+      @dummy_class.friends[0].parent.should == @dummy_class
+    end
+    
+    it 'should have a parent assigned when set after initialization' do
+      @dummy_class.friends = [{ name: 'Yaw' }]
+      @dummy_class.friends[0].parent.should == @dummy_class
     end
   end
 end

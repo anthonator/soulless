@@ -14,6 +14,12 @@ module Soulless
           end
         end
         
+        def initialize(params = {})
+          super
+          init_dirty
+          init_accessors(attribute_set.map { |a| a.name })
+        end
+        
         def persisted?
           false
         end

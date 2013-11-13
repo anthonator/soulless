@@ -1,7 +1,13 @@
 module Soulless
   module Associations
     def self.included(base)
-      base.instance_eval do |object|
+      base.instance_eval do
+        @association_attributes = []
+        
+        class << self
+          attr_reader :association_attributes
+        end
+        
         def has_one(name, superclass = Object, &block)
           klass = define_virtus_class(name, superclass, &block)
           send(:attribute, name, klass)
@@ -14,9 +20,11 @@ module Soulless
         
         private
         def define_virtus_class(name, superclass, &block)
+          @association_attributes << name
           klass_name = name.to_s.singularize.classify + '_' + SecureRandom.hex
           klass = const_set(klass_name, Class.new(superclass))
           klass.send(:include, Soulless.model) unless klass.included_modules.include?(Model)
+          klass.send(:attr_accessor, :parent)
           klass.instance_eval(&block) if block_given?
           klass.model_name.instance_variable_set(:@i18n_key, klass.model_name.i18n_key.to_s.gsub(/_[^_]+$/, '').underscore.to_sym)
           klass

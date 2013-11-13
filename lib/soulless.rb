@@ -3,6 +3,7 @@ require 'securerandom'
 require 'active_support'
 require 'active_model'
 
+require 'soulless/accessors'
 require 'soulless/associations'
 require 'soulless/dirty'
 require 'soulless/model'
@@ -20,6 +21,7 @@ module Soulless
       object.send(:include, Associations)
       object.send(:include, Validations)
       object.send(:include, Dirty)
+      object.send(:include, Accessors)
     end
     mod
   end
