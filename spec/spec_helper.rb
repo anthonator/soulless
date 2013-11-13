@@ -1,5 +1,5 @@
-#require 'coveralls'
-#Coveralls.wear!
+require 'coveralls'
+Coveralls.wear!
 
 require File.expand_path("../../spec/dummy/config/environment", __FILE__)
 

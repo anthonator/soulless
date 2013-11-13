@@ -4,8 +4,9 @@ module Soulless
       base.class_eval do
         extend ActiveModel::Naming
         extend ActiveModel::Translation
-        include ActiveModel::Validations
         include ActiveModel::Conversion
+        include ActiveModel::Dirty
+        include ActiveModel::Validations
         
         class << self
           def i18n_scope

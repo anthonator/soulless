@@ -1,22 +1,11 @@
 require 'virtus'
 require 'securerandom'
-require 'active_support/core_ext/array/wrap'
-require 'active_support/core_ext/class/attribute'
-require 'active_support/core_ext/module/delegation'
-require 'active_support/callbacks'
-require 'active_support/concern'
-require 'active_support/inflector'
-require 'active_model/naming'
-require 'active_model/translation'
-require 'active_model/callbacks'
-require 'active_model/validator'
-require 'active_model/errors'
-require 'active_model/validations'
-require 'active_model/conversion'
-require 'active_model/version'
+require 'active_support'
+require 'active_model'
 
-require 'soulless/model'
 require 'soulless/associations'
+require 'soulless/dirty'
+require 'soulless/model'
 require 'soulless/validations'
 require 'soulless/version'
 
@@ -30,6 +19,7 @@ module Soulless
       object.send(:include, Model)
       object.send(:include, Associations)
       object.send(:include, Validations)
+      object.send(:include, Dirty)
     end
     mod
   end
