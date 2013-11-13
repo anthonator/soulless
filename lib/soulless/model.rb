@@ -21,6 +21,7 @@ module Soulless
         def save
           if valid?
             persist!
+            changes_applied
             true
           else
             false

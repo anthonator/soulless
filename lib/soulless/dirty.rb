@@ -14,6 +14,11 @@ module Soulless
           @changed_attributes = {}
         end
         
+        def changes_applied
+          @previously_changed = changed
+          @changed_attributes = {}
+        end
+        
         def define_dirty_attributes(attributes)
           self.class.define_attribute_methods(attributes)
         end
