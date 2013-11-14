@@ -41,6 +41,12 @@ describe Soulless do
     @dummy_class.email.should == 'yokoono@thebeatles.com'
   end
   
+  it '#update_attributes should deep merge new values' do
+    @dummy_class = DummyAssociation.new(spouse: { name: 'Megan' })
+    @dummy_class.update_attributes(spouse: { name: 'Mary Jane Watson' })
+    @dummy_class.spouse.name.should == 'Mary Jane Watson'
+  end
+  
   it '#persisted? should be false' do
     @dummy_class.persisted?.should be_false
   end

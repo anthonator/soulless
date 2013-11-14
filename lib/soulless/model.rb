@@ -35,13 +35,23 @@ module Soulless
         end
     
         def update_attributes(attributes)
-          self.attributes = self.attributes.merge(attributes)
+          deep_update(self, attributes)
           save
         end
     
         private
         def persist!
           raise 'Method persist! not defined...'
+        end
+        
+        def deep_update(object, attributes)
+          attributes.each do |key, value|
+            if value.kind_of?(Hash)
+              deep_update(object.send(key), value)
+            else
+              object.send("#{key}=", value)
+            end
+          end
         end
       end
     end
