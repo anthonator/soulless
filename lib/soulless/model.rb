@@ -35,7 +35,7 @@ module Soulless
         end
     
         def update_attributes(attributes)
-          self.attributes = attributes
+          self.attributes = self.attributes.merge(attributes)
           save
         end
     

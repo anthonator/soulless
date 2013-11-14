@@ -34,6 +34,13 @@ describe Soulless do
     @dummy_class.saved?.should be_true
   end
   
+  it '#update_attributes should merge new values' do
+    @dummy_class.email = 'yokoono@thebeatles.com'
+    @dummy_class.update_attributes(name: 'Yaw')
+    @dummy_class.name.should == 'Yaw'
+    @dummy_class.email.should == 'yokoono@thebeatles.com'
+  end
+  
   it '#persisted? should be false' do
     @dummy_class.persisted?.should be_false
   end
