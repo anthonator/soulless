@@ -14,7 +14,9 @@
 ActiveRecord::Schema.define(version: 20131106221200) do
 
   create_table "dummy_models", force: true do |t|
-    t.string   "name"
+    t.string   "name",       default: "Anthony"
+    t.string   "email"
+    t.boolean  "saved",      default: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
