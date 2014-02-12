@@ -329,6 +329,8 @@ form.errors.messages # => { name: ["can't be blank"] }
 
 ```use_database_default``` - Use the value of the ```default``` migration option as the default value for an attribute. Accepts either a boolean (for all attributes), a string or symbol for a single attribute or an array of strings and symbols for multiple attributes.
 
+```additional_attributes``` - Used to specify attributes that cannot automatically be added to the form model. These are generally attributes that have been specified using ```attr_accessor```. Accepts a string, symbolr or an array of strings and symbols for multiple attributes.
+
 ### I18n
 
 Define locales similar to how you would define them in Rails.
