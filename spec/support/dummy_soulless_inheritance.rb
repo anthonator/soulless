@@ -1,7 +1,7 @@
 class DummySoullessInheritance
   include Soulless.model
   
-  inherit_from(DummyClass, { exclude: :email })
+  inherit_from(::DummyClass, { exclude: :email })
   
   private
   def persist!
