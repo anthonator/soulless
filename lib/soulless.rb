@@ -11,6 +11,8 @@ require 'soulless/model'
 require 'soulless/validations'
 require 'soulless/version'
 
+require 'soulless/railtie' if defined?(Rails)
+
 module Soulless
   I18n.load_path += Dir.glob('lib/soulless/locale/*.{rb,yml}')
   
