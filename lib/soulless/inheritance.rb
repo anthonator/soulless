@@ -7,7 +7,7 @@ module Soulless
          
          attributes.each do |attribute|
            self.attribute(attribute[:name], attribute[:primitive], attribute[:options])
-           if Object.const_defined?('ActiveModel::Validations'.to_sym) && klass.ancestors.include?(ActiveModel::Validations)
+           if Object.const_defined?('ActiveModel'.to_sym) && klass.ancestors.include?(ActiveModel::Validations)
              setup_validators(attribute[:name], klass, options)
            end
          end
@@ -17,7 +17,7 @@ module Soulless
        def get_attributes(klass, options)
          if klass.ancestors.include?(Virtus::Model::Core)
            get_virtus_attributes(klass, options)
-         elsif Object.const_defined?('ActiveRecord::Base'.to_sym) && klass.ancestors.include?(ActiveRecord::Base)
+         elsif Object.const_defined?('ActiveRecord'.to_sym) && klass.ancestors.include?(ActiveRecord::Base)
            get_active_record_attributes(klass, options)
          end
        end
