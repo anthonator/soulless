@@ -253,6 +253,82 @@ person.spouse.name_change # => ["Mary Jane Watson", "Gwen Stacy"]
 person.changed? # => false
 ```
 
+### Inheritance
+
+One of the biggest pitfalls of the form object pattern is duplication of code. It's not uncommon for a form object to define attributes and validations that are identical to the model it represets.
+
+To get rid of this annoying issue Soulless implements the ```#inherit_from(klass, options = {})``` method. This method will allow a Soulless model to inherit attributes and validations from any Rails model, Soulless model or Virtus object.
+
+```ruby
+class User < ActiveRecord::Base
+  validates :name, presence: true
+  
+  validates :email, presence: true,
+                    uniqueness: { case_insensitive: true }
+end
+```
+
+```ruby
+class UserSignupForm
+  include Soulless.model
+  
+  inherit_from(User)
+end
+```
+
+The ```UserSignupForm``` has automatically been defined with the ```name``` and ```email``` attributes and validations.
+
+```ruby
+UserSignupForm.attributes # => name and email attributes
+form = UserSignupForm.new
+form.valid? # => false
+form.errors.messages # => { name: ["can't be blank"], email: ["can't be blank"] }
+```
+
+If your model is using the uniqueness validator it will automatically convert it to the [uniqueness validator provided by Soulless](https://github.com/anthonator/soulless#uniqueness-validations).
+
+The ```#inherit_from(klass, options = {})``` method also allows you to provide options for managing inherited attributes.
+
+If you don't want to inherit the ```email``` attribute define it using the ```exclude``` option.
+
+```ruby
+class UserSignupForm
+  include Soulless.model
+  
+  inherit_from(User, exclude: :email)
+end
+
+UserSignupForm.attributes # => email will not be inherited
+form = UserSignupForm.new
+form.valid? # => false
+form.errors.messages # => { name: ["can't be blank"] }
+```
+
+You can also flip it around if you only want the ```name``` attribute by using the ```only``` option.
+
+```ruby
+class UserSignupForm
+  include Soulless.model
+  
+  inherit_from(User, only: :name)
+end
+
+UserSignupForm.attributes # => email will not be inherited
+form = UserSignupForm.new
+form.valid? # => false
+form.errors.messages # => { name: ["can't be blank"] }
+```
+
+#### Available Options
+
+```only``` - Only inherit the attributes and validations for the provided attributes. Any attributes not specified will be ignored. Accepts strings, symbols and an array of strings or symbols.
+
+```exclude``` - Don't inherit the attributes and validations for the provided attributes. Accepts strings, symbols and an array of strings or symbols.
+
+```skip_validators``` - Only inherit attributes. Don't inherit any validators. Accepts a boolean.
+
+```use_database_default``` - Use the value of the ```default``` migration option as the default value for an attribute. Accepts either a boolean (for all attributes), a string or symbol for a single attribute or an array of strings and symbols for multiple attributes.
+
 ### I18n
 
 Define locales similar to how you would define them in Rails.
