@@ -25,8 +25,9 @@ module Soulless
        def get_virtus_attributes(klass, options)
          attributes = []
          attribute_set = klass.attribute_set
-         attribute_set.each do |attribute|
-           attribute_name = attribute.options[:name].to_s
+         attribute_names = get_attribute_names(attribute_set.map{ |a| a.options[:name] }, options)
+         attribute_names.each do |attribute_name|
+           attribute = attribute_set[attribute_name]
            if include_attribute?(attribute_name, options)
              attributes << {
                name: attribute_name,
@@ -42,18 +43,21 @@ module Soulless
        
        def get_active_record_attributes(klass, options)
          attributes = []
-         columns = klass.columns
-         columns.each do |column|
-           if include_attribute?(column.name, options)
+         attribute_names = get_attribute_names(klass.attribute_names.dup, options)
+         attribute_names.each do |attribute_name|
+           if include_attribute?(attribute_name, options)
+             column = klass.columns_hash[attribute_name.to_s]
              attribute = {
-               name: column.name,
-               primitive: translate_primitive(column.type),
+               name: attribute_name,
+               primitive: String,
                options: {}
              }
-             attribute[:options] = { default: column.default } if options[:use_database_default] == true ||
-                                                                  options[:use_database_default] == column.name ||
-                                                                  (options[:use_database_default].kind_of?(Array) &&
-                                                                   options[:use_database_default].collect { |v| v.to_s }.include?(column.name))
+             attribute[:primitive] = translate_primitive(column.type) if column
+             attribute[:options] = { default: column.default } if column && 
+                                                                  (options[:use_database_default] == true ||
+                                                                    options[:use_database_default] == attribute_name ||
+                                                                    (options[:use_database_default].kind_of?(Array) &&
+                                                                      options[:use_database_default].collect { |v| v.to_s }.include?(attribute_name)))
              attributes << attribute
            end
          end
@@ -84,10 +88,12 @@ module Soulless
        end
        
        def translate_primitive(primitive)
+         return nil unless primitive
          translated_primitive = primitive.to_s.capitalize
-         translated_primitive = Virtus::Attribute::Boolean.name if translated_primitive == 'Boolean'
-         translated_primitive = DateTime.name if translated_primitive == 'Datetime'
-         translated_primitive.constantize
+         translated_primitive = Virtus::Attribute::Boolean if translated_primitive == 'Boolean'
+         translated_primitive = DateTime if translated_primitive == 'Datetime'
+         translated_primitive = String if translated_primitive == 'Uuid'
+         translated_primitive
        end
        
        def include_attribute?(attribute_name, options)
@@ -104,6 +110,14 @@ module Soulless
          only_attributes.collect!{ |v| v.to_s }
          
          !exclude_attributes.include?(attribute_name) && (only_attributes.empty? || only_attributes.include?(attribute_name))
+       end
+       
+       def get_attribute_names(attributes, options)
+         attribute_names = attributes
+         attribute_names << options[:additional_attributes] if options[:additional_attributes]
+         attribute_names.flatten!
+         attribute_names.map!{ |a| a.to_s }
+         attribute_names
        end
      end
     end
