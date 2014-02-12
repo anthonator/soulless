@@ -6,6 +6,7 @@ require 'active_model'
 require 'soulless/accessors'
 require 'soulless/associations'
 require 'soulless/dirty'
+require 'soulless/inheritance'
 require 'soulless/model'
 require 'soulless/validations'
 require 'soulless/version'
@@ -22,6 +23,7 @@ module Soulless
       object.send(:include, Validations)
       object.send(:include, Dirty)
       object.send(:include, Accessors)
+      object.send(:include, Inheritance)
     end
     mod
   end
