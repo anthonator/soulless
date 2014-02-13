@@ -65,12 +65,14 @@ module Soulless
        end
        
        def setup_validators(attribute_name, klass, options)
-         return if options[:skip_validators] || !include_attribute?(attribute_name, options)
+         return if skip_validators?(attribute_name, options) || !include_attribute?(attribute_name, options)
          klass.validators.each do |validator|
            if validator.attributes.include?(attribute_name.to_sym)
              validator_class = validator.class
              validator_options = {}
              validator_options.merge!(validator.options)
+             next if validator_options.include?(:on) && options["validate_#{attribute_name}_on".to_sym] != validator_options[:on]
+             validator_options.delete(:on)
              if validator_class == ActiveRecord::Validations::UniquenessValidator
                validator_class = Validations::UniquenessValidator
                validator_options.merge!(model: klass)
@@ -85,6 +87,14 @@ module Soulless
              validates_with(validator_class, { attributes: attribute_name }.merge(validator_options))
            end
          end
+       end
+       
+       def get_attribute_names(attributes, options)
+         attribute_names = attributes
+         attribute_names << options[:additional_attributes] if options[:additional_attributes]
+         attribute_names.flatten!
+         attribute_names.map!{ |a| a.to_s }
+         attribute_names
        end
        
        def translate_primitive(primitive)
@@ -112,12 +122,13 @@ module Soulless
          !exclude_attributes.include?(attribute_name) && (only_attributes.empty? || only_attributes.include?(attribute_name))
        end
        
-       def get_attribute_names(attributes, options)
-         attribute_names = attributes
-         attribute_names << options[:additional_attributes] if options[:additional_attributes]
-         attribute_names.flatten!
-         attribute_names.map!{ |a| a.to_s }
-         attribute_names
+       def skip_validators?(attribute_name, options)
+         return true if options[:skip_validators] == true
+         skip_validators = []
+         skip_validators << options[:skip_validators]
+         skip_validators.flatten!
+         skip_validators.collect!{ |v| v.to_s }
+         skip_validators.include?(attribute_name)
        end
      end
     end

@@ -329,7 +329,9 @@ form.errors.messages # => { name: ["can't be blank"] }
 
 ```use_database_default``` - Use the value of the ```default``` migration option as the default value for an attribute. Accepts either a boolean (for all attributes), a string or symbol for a single attribute or an array of strings and symbols for multiple attributes.
 
-```additional_attributes``` - Used to specify attributes that cannot automatically be added to the form model. These are generally attributes that have been specified using ```attr_accessor```. Accepts a string, symbolr or an array of strings and symbols for multiple attributes.
+```additional_attributes``` - Used to specify attributes that cannot automatically be added to the form model. These are generally attributes that have been specified using ```attr_accessor```. Accepts a string, symbol or an array of strings and symbols for multiple attributes.
+
+```validate_attribute_on``` - By default any validation that specifies an ```:on``` option will not be inherited. This option will allow you to inherit a validator that uses the ```:on``` with a specific value. Example usage: ```validate_password_on: :create`. Accepts a string or symbol. This option will accept any value that the Rails ```:on``` validator option can accept.
 
 ### I18n
 
