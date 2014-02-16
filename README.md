@@ -331,7 +331,7 @@ form.errors.messages # => { name: ["can't be blank"] }
 
 ```additional_attributes``` - Used to specify attributes that cannot automatically be added to the form model. These are generally attributes that have been specified using ```attr_accessor```. Accepts a string, symbol or an array of strings and symbols for multiple attributes.
 
-```validate_attribute_on``` - By default any validation that specifies an ```:on``` option will not be inherited. This option will allow you to inherit a validator that uses the ```:on``` with a specific value. Example usage: ```validate_password_on: :create`. Accepts a string or symbol. This option will accept any value that the Rails ```:on``` validator option can accept.
+```validate_attribute_on``` - By default any validation that specifies an ```:on``` option will not be inherited. This option will allow you to inherit a validator that uses the ```:on``` with a specific value. Example usage: ```validate_password_on: :create```. Accepts a string or symbol. This option will accept any value that the Rails ```:on``` validator option can accept.
 
 ### I18n
 
@@ -344,8 +344,9 @@ en:
     errors:
       models:
         person:
-          name:
-            blank: "there's nothing here"
+          attributes:
+            name:
+              blank: "there's nothing here"
 ```
 
 For attributes defined as ```has_one``` and ```has_many``` associations use the enclosing class as the locale key's namespace.
@@ -356,8 +357,9 @@ en:
     errors:
       models:
         person/spouse:
-          name:
-            blank: "there's nothing here"
+          attributes:
+            name:
+              blank: "there's nothing here"
 ```
 
 ## Contributing
