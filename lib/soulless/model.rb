@@ -33,9 +33,13 @@ module Soulless
             false
           end
         end
+        
+        def assign_attributes(attributes)
+          deep_update(self, attributes)
+        end
     
         def update_attributes(attributes)
-          deep_update(self, attributes)
+          assign_attributes(attributes)
           save
         end
     

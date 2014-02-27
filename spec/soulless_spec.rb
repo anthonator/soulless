@@ -27,24 +27,27 @@ describe Soulless do
     @dummy_class.saved.should be_false
   end
   
-  it '#update_attributes should update multiple attributes and then save' do
-    @dummy_class.update_attributes(name: 'Yaw', email: 'yokoono@thebeatles.com')
-    @dummy_class.name.should == 'Yaw'
-    @dummy_class.email.should == 'yokoono@thebeatles.com'
-    @dummy_class.saved?.should be_true
+  it '#update_attributes should not save' do
+    @dummy_class.assign_attributes(name: 'Yaw', email: 'yokoono@thebeatles.com')
+    @dummy_class.saved?.should be_false
   end
   
-  it '#update_attributes should merge new values' do
+  it '#assign_attributes should merge new values' do
     @dummy_class.email = 'yokoono@thebeatles.com'
-    @dummy_class.update_attributes(name: 'Yaw')
+    @dummy_class.assign_attributes(name: 'Yaw')
     @dummy_class.name.should == 'Yaw'
     @dummy_class.email.should == 'yokoono@thebeatles.com'
   end
   
-  it '#update_attributes should deep merge new values' do
+  it '#assign_attributes should deep merge new values' do
     @dummy_class = DummyAssociation.new(spouse: { name: 'Megan' })
-    @dummy_class.update_attributes(spouse: { name: 'Mary Jane Watson' })
+    @dummy_class.assign_attributes(spouse: { name: 'Mary Jane Watson' })
     @dummy_class.spouse.name.should == 'Mary Jane Watson'
+  end
+  
+  it '#update_attributes should save' do
+    @dummy_class.update_attributes(name: 'Yaw', email: 'yokoono@thebeatles.com')
+    @dummy_class.saved?.should be_true
   end
   
   it '#persisted? should be false' do
