@@ -7,7 +7,6 @@ describe Soulless::Inheritance do
     end
 
     it 'should inherit the name attribute' do
-      puts @dummy_inheritance.attributes.keys.inspect
       @dummy_inheritance.attributes.keys.should include(:name)
     end
 
