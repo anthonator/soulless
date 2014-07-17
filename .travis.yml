@@ -11,6 +11,9 @@ env:
   - "RAILS_VERSION=3.2.0"
   - "RAILS_VERSION=4.0.0"
   - "RAILS_VERSION=master"
+script:
+  - cd spec/dummy; bundle exec rake db:migrate
+  - cd ../../; bundle exec rake spec
 matrix:
   allow_failures:
     - env: "RAILS_VERSION=master"
