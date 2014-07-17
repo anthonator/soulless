@@ -22,13 +22,6 @@ platforms :jruby do
   gem "activerecord-jdbcsqlite3-adapter"
 end
 
-platforms :rbx do
-  gem 'psych'
-  gem 'racc'
-  gem 'rubysl'
-  gem 'rubinius-coverage'
-end
-
 group :development do
   gem 'coveralls', require: false
 end
