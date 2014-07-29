@@ -53,4 +53,9 @@ describe Soulless do
   it '#persisted? should be false' do
     expect(@dummy_class.persisted?).to eq(false)
   end
+
+  it 'should call the before_validation callback' do
+    @dummy_class.save
+    expect(@dummy_class.validation_callback).to eq(true)
+  end
 end
