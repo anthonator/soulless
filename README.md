@@ -26,16 +26,16 @@ Just define a plain-old-ruby-object, include Soulless and get crackin'!
 ```ruby
 class UserSignupForm
   include Soulless.model
-  
+
   attribute :name, String
   attribute :email, String
   attribute :password, String
-  
+
   validates :name, presence: true
-  
+
   validates :email, presence: true,
                     uniqueness: { model: User }
-  
+
   validates :password, presence: true,
                        lenght: { is_at_least: 8 }
 
@@ -54,7 +54,7 @@ Soulless let's _you_ define what happens when your object is ready to be process
 class UserSignupForm
 
   ...
-  
+
   private
   def persist!
     user = User.create!(name: name, email: email, password: password)
@@ -83,12 +83,12 @@ Soulless lets you define your validations and manage your errors just like you d
 class UserSignupForm
 
   ...
-  
+
   validates :name, presence: true
-  
+
   validates :email, presence: true,
                     uniqueness: { model: User }
-  
+
   validates :password, presence: true,
                        lenght: { minimum: 8 }
 
@@ -120,12 +120,12 @@ If you're using Soulless in Rails it's even possible to validate uniqueness.
 class UserSignupForm
 
   ...
-  
+
   validates :primary_email, presence: true,
                             uniqueness: { model: User, attribute: :email }
-  
+
   ...
-  
+
 end
 ```
 
@@ -140,15 +140,15 @@ When you need associations use ```has_one``` and ```has_many```. Look familiar?
 ```ruby
 class Person
   include Soulless.model
-  
+
   attribute :name, String
-  
+
   validates :name, presence: true
-  
+
   has_one :spouse do
     attribute :name, String
   end
-  
+
   has_many :friends do
     attribute :name, String
   end
@@ -168,17 +168,17 @@ It's also possible for an association to inherit from a parent class and then ex
 ```ruby
 class Person
   include Soulless.model
-  
+
   attribute :name, String
-  
+
   validates :name, presence: true
-  
+
   has_one :spouse, Person do # inherits 'name' and validation from Person
     attribute :anniversary, DateTime
-    
+
     validates :anniversary, presence: true
   end
-  
+
   has_many :friends, Person # just inherit from Person, don't extend
 end
 ```
@@ -188,11 +188,11 @@ Your association has access to it's ```parent``` object as well.
 ```ruby
 class Person
   include Soulless.model
-  
+
   attribute :name, String
-  
+
   validates :name, presence: true
-  
+
   has_one :children do
     attribute :name, String, default: lambda { "#{parent.name} Jr." }
   end
@@ -205,17 +205,17 @@ When you need to make sure an association is valid before processing the object 
 class Person
 
   ...
-  
+
   has_one :spouse do
     attribute :name, String
-    
+
     validates :name, presence: true
   end
-  
+
   validates_associated :spouse
-  
+
   ...
-  
+
 end
 
 person = Person.new(name: 'Anthony')
@@ -223,6 +223,44 @@ person.spouse = { name: nil }
 person.valid? # => false
 person.errors[:spouse] # => ["is invalid"]
 person.spouse.errors[:name] # => ["can't be blank"]
+```
+
+### Callbacks
+
+Soulless supports the validation and save callbacks. You can use these callbacks
+as you would on a Rails model.
+
+```ruby
+class Person
+  include Soulless.model
+
+  attribute :name, String
+
+  validates :name, presence: true
+
+  before_validation :change_name_to_bart_simpson
+
+  before_save :change_name_to_mickey_mouse
+
+  has_one :children do
+    attribute :name, String, default: lambda { "#{parent.name} Jr." }
+  end
+
+  private
+  def change_name_to_bart_simpson
+    self.name = 'Bart Simpson'
+  end
+
+  def change_name_to_mickey_mouse
+    self.name = 'Mickey Mouse'
+  end
+end
+
+person = Person.new(name: 'Anthony')
+person.valid?
+person.name # => "Bart Simpson"
+person.save
+person.name # => "Mickey Mouse"
 ```
 
 ### Dirty Attributes
@@ -262,7 +300,7 @@ To get rid of this annoying issue Soulless implements the ```#inherit_from(klass
 ```ruby
 class User < ActiveRecord::Base
   validates :name, presence: true
-  
+
   validates :email, presence: true,
                     uniqueness: { case_insensitive: true }
 end
@@ -271,7 +309,7 @@ end
 ```ruby
 class UserSignupForm
   include Soulless.model
-  
+
   inherit_from(User)
 end
 ```
@@ -294,7 +332,7 @@ If you don't want to inherit the ```email``` attribute define it using the ```ex
 ```ruby
 class UserSignupForm
   include Soulless.model
-  
+
   inherit_from(User, exclude: :email)
 end
 
@@ -309,7 +347,7 @@ You can also flip it around if you only want the ```name``` attribute by using t
 ```ruby
 class UserSignupForm
   include Soulless.model
-  
+
   inherit_from(User, only: :name)
 end
 
