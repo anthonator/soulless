@@ -4,7 +4,7 @@ module Soulless
      base.instance_eval do
        def inherit_from(klass, options = {})
          attributes = get_attributes(klass, options)
-         
+
          attributes.each do |attribute|
            self.attribute(attribute[:name], attribute[:primitive], attribute[:options])
            if Object.const_defined?('ActiveModel'.to_sym) && klass.ancestors.include?(ActiveModel::Validations)
@@ -12,7 +12,7 @@ module Soulless
            end
          end
        end
-       
+
        private
        def get_attributes(klass, options)
          if klass.ancestors.include?(Virtus::Model::Core)
@@ -21,7 +21,7 @@ module Soulless
            get_active_record_attributes(klass, options)
          end
        end
-       
+
        def get_virtus_attributes(klass, options)
          attributes = []
          attribute_set = klass.attribute_set
@@ -40,7 +40,7 @@ module Soulless
          end
          attributes
        end
-       
+
        def get_active_record_attributes(klass, options)
          attributes = []
          attribute_names = get_attribute_names(klass.attribute_names.dup, options)
@@ -53,7 +53,7 @@ module Soulless
                options: {}
              }
              attribute[:primitive] = translate_primitive(column.type) if column
-             attribute[:options] = { default: column.default } if column && 
+             attribute[:options] = { default: column.default } if column &&
                                                                   (options[:use_database_default] == true ||
                                                                     options[:use_database_default] == attribute_name ||
                                                                     (options[:use_database_default].kind_of?(Array) &&
@@ -63,7 +63,7 @@ module Soulless
          end
          attributes
        end
-       
+
        def setup_validators(attribute_name, klass, options)
          return if skip_validators?(attribute_name, options) || !include_attribute?(attribute_name, options)
          klass.validators.each do |validator|
@@ -82,13 +82,15 @@ module Soulless
                # environment without a database. It's
                # necessary to convert to an ActiveModel
                # validation.
-               validator_class = "ActiveModel::Validations::#{validator_class.name.split('::').last}".constantize
+               if validator_class.name =~ /\AActiveRecord/
+                 validator_class = "ActiveModel::Validations::#{validator_class.name.split('::').last}".constantize
+               end
              end
              validates_with(validator_class, { attributes: attribute_name }.merge(validator_options))
            end
          end
        end
-       
+
        def get_attribute_names(attributes, options)
          attribute_names = attributes
          attribute_names << options[:additional_attributes] if options[:additional_attributes]
@@ -96,7 +98,7 @@ module Soulless
          attribute_names.map!{ |a| a.to_s }
          attribute_names
        end
-       
+
        def translate_primitive(primitive)
          return nil unless primitive
          translated_primitive = primitive.to_s.capitalize
@@ -105,7 +107,7 @@ module Soulless
          translated_primitive = String if translated_primitive == 'Uuid'
          translated_primitive
        end
-       
+
        def include_attribute?(attribute_name, options)
          # Attributes we don't want to inherit
          exclude_attributes = ['id']
@@ -118,10 +120,10 @@ module Soulless
          only_attributes << options[:only] if options[:only]
          only_attributes.flatten!
          only_attributes.collect!{ |v| v.to_s }
-         
+
          !exclude_attributes.include?(attribute_name) && (only_attributes.empty? || only_attributes.include?(attribute_name))
        end
-       
+
        def skip_validators?(attribute_name, options)
          return true if options[:skip_validators] == true
          skip_validators = []
