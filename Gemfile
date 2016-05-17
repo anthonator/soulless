@@ -18,6 +18,10 @@ platforms :ruby do
   gem 'sqlite3'
 end
 
+platforms :ruby_19, :jruby_19 do
+  gem 'mime-types', '~> 2.99.1'
+end
+
 platforms :jruby do
   gem "activerecord-jdbcsqlite3-adapter"
 end
