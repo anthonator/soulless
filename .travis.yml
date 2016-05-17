@@ -1,0 +1,21 @@
+language: ruby
+rvm:
+  - 2.1.0
+  - 2.2.0
+  - 2.3.0
+  - ruby-head
+  - jruby-head
+  - rbx-2
+env:
+  - "RAILS_VERSION=4.2.0"
+  - "RAILS_VERSION=5.0.0.rc1"
+  - "RAILS_VERSION=master"
+script:
+  - cd spec/dummy; bundle exec rake db:migrate
+  - cd ../../; bundle exec rake spec
+matrix:
+  allow_failures:
+    - env: "RAILS_VERSION=master"
+    - rvm: ruby-head
+    - rvm: jruby-head
+sudo: false
