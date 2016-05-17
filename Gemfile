@@ -19,7 +19,9 @@ platforms :ruby do
 end
 
 platforms :ruby_19, :jruby_19 do
-  gem 'mime-types', '~> 2.99.1'
+  if rails_version < '5.0'
+    gem 'mime-types', '~> 2.99.1'
+  end
 end
 
 platforms :jruby do
