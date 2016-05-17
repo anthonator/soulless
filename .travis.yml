@@ -15,8 +15,6 @@ env:
   - "RAILS_VERSION=4.1.0"
   - "RAILS_VERSION=4.2.0"
   - "RAILS_VERSION=master"
-before_deploy:
-  - rvm 1.9.3 do gem install mime-types -v 2.99.1
 script:
   - cd spec/dummy; bundle exec rake db:migrate
   - cd ../../; bundle exec rake spec
