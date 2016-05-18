@@ -11,3 +11,4 @@
 .rbenv*
 .rvmrc
 .DS_Store
+*.sqlite3
