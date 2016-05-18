@@ -44,35 +44,6 @@ class UserSignupForm < Soulless::Model
 end
 ```
 
-### Processing an Object
-
-Soulless let's _you_ define what happens when your object is ready to be processed.
-
-```ruby
-class UserSignupForm
-
-  ...
-
-  private
-  def persist!
-    user = User.create!(name: name, email: email, password: password)
-    UserMailer.send_activation_code(user).deliver
-    user.charge_card!
-  end
-end
-```
-
-Process your Soulless object by calling ```save```. Just like a Rails model!
-
-```ruby
-form = UserSignupForm.new(name: name, email: email, password: passord)
-if form.save
-  # Called persist! and all is good!
-else
-  # Looks like a validation failed. Try again.
-end
-```
-
 ### Validations and Errors
 
 Soulless lets you define your validations and manage your errors just like you did in Rails.
@@ -133,8 +104,8 @@ If your Soulless object attribute doesn't match up to the ActiveRecord model att
 
 ### Callbacks
 
-Soulless supports the validation and save callbacks. You can use these callbacks
-as you would on a Rails model.
+Soulless supports the validation callback. You can use this callback as you
+would on a Rails model.
 
 ```ruby
 class Person < Soulless::Model
@@ -145,23 +116,15 @@ class Person < Soulless::Model
 
   before_validation :change_name_to_bart_simpson
 
-  before_save :change_name_to_mickey_mouse
-
   private
   def change_name_to_bart_simpson
     self.name = 'Bart Simpson'
-  end
-
-  def change_name_to_mickey_mouse
-    self.name = 'Mickey Mouse'
   end
 end
 
 person = Person.new(name: 'Anthony')
 person.valid?
 person.name # => "Bart Simpson"
-person.save
-person.name # => "Mickey Mouse"
 ```
 
 ### Dirty Attributes
@@ -217,7 +180,6 @@ If you don't want to inherit the ```email``` attribute define it using the ```ex
 
 ```ruby
 class UserSignupForm < Soulless::Model
-
   inherit_from(User, exclude: :email)
 end
 
@@ -231,7 +193,6 @@ You can also flip it around if you only want the ```name``` attribute by using t
 
 ```ruby
 class UserSignupForm < Soulless::Model
-
   inherit_from(User, only: :name)
 end
 
