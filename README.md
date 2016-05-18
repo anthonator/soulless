@@ -21,12 +21,10 @@ Or install it yourself as:
 
 ## Usage
 
-Just define a plain-old-ruby-object, include Soulless and get crackin'!
+Just define a plain-old-ruby-object, inherit from `Soulless::Model` and get crackin'!
 
 ```ruby
-class UserSignupForm
-  include Soulless.model
-
+class UserSignupForm < Soulless::Model
   attribute :name, String
   attribute :email, String
   attribute :password, String
@@ -139,8 +137,7 @@ Soulless supports the validation and save callbacks. You can use these callbacks
 as you would on a Rails model.
 
 ```ruby
-class Person
-  include Soulless.model
+class Person < Soulless::Model
 
   attribute :name, String
 
@@ -149,10 +146,6 @@ class Person
   before_validation :change_name_to_bart_simpson
 
   before_save :change_name_to_mickey_mouse
-
-  has_one :children do
-    attribute :name, String, default: lambda { "#{parent.name} Jr." }
-  end
 
   private
   def change_name_to_bart_simpson
@@ -186,19 +179,6 @@ person.name_was # => "Anthony"
 person.name_change # => ["Anthony", "Peter Parker"]
 ```
 
-Works on ```has_one``` and ```has_many``` too.
-
-```ruby
-person.spouse.name = 'Gwen Stacy'
-person.spouse.changed? # => true
-person.spouse.changed # => ["name"]
-person.spouse.changes # => { name: ["Mary Jane Watson", "Gwen Stacy"] }
-person.spouse.name_changed? # => true
-person.spouse.name_was # => "Mary Jane Watson"
-person.spouse.name_change # => ["Mary Jane Watson", "Gwen Stacy"]
-person.changed? # => false
-```
-
 ### Inheritance
 
 One of the biggest pitfalls of the form object pattern is duplication of code. It's not uncommon for a form object to define attributes and validations that are identical to the model it represets.
@@ -215,9 +195,7 @@ end
 ```
 
 ```ruby
-class UserSignupForm
-  include Soulless.model
-
+class UserSignupForm < Soulless::Model
   inherit_from(User)
 end
 ```
@@ -238,8 +216,7 @@ The ```#inherit_from(klass, options = {})``` method also allows you to provide o
 If you don't want to inherit the ```email``` attribute define it using the ```exclude``` option.
 
 ```ruby
-class UserSignupForm
-  include Soulless.model
+class UserSignupForm < Soulless::Model
 
   inherit_from(User, exclude: :email)
 end
@@ -253,8 +230,7 @@ form.errors.messages # => { name: ["can't be blank"] }
 You can also flip it around if you only want the ```name``` attribute by using the ```only``` option.
 
 ```ruby
-class UserSignupForm
-  include Soulless.model
+class UserSignupForm < Soulless::Model
 
   inherit_from(User, only: :name)
 end
@@ -290,19 +266,6 @@ en:
     errors:
       models:
         person:
-          attributes:
-            name:
-              blank: "there's nothing here"
-```
-
-For attributes defined as ```has_one``` and ```has_many``` associations use the enclosing class as the locale key's namespace.
-
-```yaml
-en:
-  soulless:
-    errors:
-      models:
-        person/spouse:
           attributes:
             name:
               blank: "there's nothing here"
