@@ -7,15 +7,13 @@ rvm:
   - jruby-head
   - rbx-2
 env:
-  - "RAILS_VERSION=4.2.0"
-  - "RAILS_VERSION=5.0.0.rc1"
-  - "RAILS_VERSION=master"
-script:
-  - cd spec/dummy; bundle exec rake db:migrate
-  - cd ../../; bundle exec rake spec
+  - "ACTIVE_RECORD_VERSION=4.2.0"
+  - "ACTIVE_RECORD_VERSION=5.0.0.rc1"
+  - "ACTIVE_RECORD_VERSION=master"
 matrix:
   allow_failures:
-    - env: "RAILS_VERSION=master"
+    - env: "ACTIVE_RECORD_VERSION=master"
+    - env: "ACTIVE_RECORD_VERSION=5.0.0.rc1"
     - rvm: ruby-head
     - rvm: jruby-head
 sudo: false
