@@ -36,11 +36,6 @@ class UserSignupForm < Soulless::Model
 
   validates :password, presence: true,
                        lenght: { is_at_least: 8 }
-
-  private
-  def persist!
-    # Define what to do when this form is ready to be saved.
-  end
 end
 ```
 
