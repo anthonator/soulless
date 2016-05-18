@@ -19,10 +19,6 @@ module Soulless
     prepend Soulless::Attributes
     prepend Soulless::Callbacks
 
-    def initialize(params={})
-      super(params)
-    end
-
     def i18n_scope
       :soulless
     end
