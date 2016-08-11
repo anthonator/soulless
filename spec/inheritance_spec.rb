@@ -12,7 +12,7 @@ describe 'Soulless::Inheritance' do
     expect(@model.name).to eq('Anthony')
   end
 
-  it 'should not inherit the email attribute' do
+  it 'should not inherit excluded attributes' do
     expect(@attributes.keys).to_not include(:email)
   end
 
