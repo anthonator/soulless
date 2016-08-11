@@ -8,6 +8,7 @@ module Soulless
 
     include ActiveModel::AttributeMethods
     include ActiveModel::Dirty
+    include ActiveModel::SecurePassword
     include ActiveModel::Serialization
     include ActiveModel::Validations
 
