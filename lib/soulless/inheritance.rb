@@ -102,6 +102,7 @@ module Soulless
       translated_primitive = Virtus::Attribute::Boolean if translated_primitive == 'Boolean'
       translated_primitive = DateTime if translated_primitive == 'Datetime'
       translated_primitive = String if translated_primitive == 'Uuid'
+      translated_primitive = String if translated_primited == 'Citext'
       translated_primitive = BigDecimal if translated_primitive == 'Decimal'
       translated_primitive
     end
