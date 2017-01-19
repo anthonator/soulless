@@ -44,7 +44,7 @@ end
 Soulless lets you define your validations and manage your errors just like you did in Rails.
 
 ```ruby
-class UserSignupForm
+class UserSignupForm < Soulless::Model
 
   ...
 
@@ -61,14 +61,14 @@ class UserSignupForm
 end
 ```
 
-Check to see if your object is valid by calling ```valid?```.
+Check to see if your object is valid by calling `valid?`.
 
 ```ruby
 form = UserSignupForm.new(name: name, email: email)
 form.valid? # => false
 ```
 
-See what errors are popping up using the ```errors``` attribute.
+See what errors are popping up using the `errors` attribute.
 
 ```ruby
 form = UserSignupForm.new(name: name, email: email)
@@ -81,7 +81,7 @@ form.errors[:password] # => ["is too short (minimum is 8 characters)"]
 If you're using Soulless in Rails it's even possible to validate uniqueness.
 
 ```ruby
-class UserSignupForm
+class UserSignupForm < Soulless::Model
 
   ...
 
@@ -93,9 +93,9 @@ class UserSignupForm
 end
 ```
 
-Just let the validator know what ActiveRecord model to use when performing the validation using the ```model``` option.
+Just let the validator know what ActiveRecord model to use when performing the validation using the `model` option.
 
-If your Soulless object attribute doesn't match up to the ActiveRecord model attribute just map it using the ```attribute``` option.
+If your Soulless object attribute doesn't match up to the ActiveRecord model attribute just map it using the `attribute` option.
 
 ### Callbacks
 
@@ -141,7 +141,7 @@ person.name_change # => ["Anthony", "Peter Parker"]
 
 One of the biggest pitfalls of the form object pattern is duplication of code. It's not uncommon for a form object to define attributes and validations that are identical to the model it represets.
 
-To get rid of this annoying issue Soulless implements the ```#inherit_from(klass, options = {})``` method. This method will allow a Soulless model to inherit attributes and validations from any Rails model, Soulless model or Virtus object.
+To get rid of this annoying issue Soulless implements the `#inherit_from(klass, options = {})` method. This method will allow a Soulless model to inherit attributes and validations from any Rails model, Soulless model or Virtus object.
 
 ```ruby
 class User < ActiveRecord::Base
@@ -158,7 +158,7 @@ class UserSignupForm < Soulless::Model
 end
 ```
 
-The ```UserSignupForm``` has automatically been defined with the ```name``` and ```email``` attributes and validations.
+The `UserSignupForm` has automatically been defined with the `name` and `email` attributes and validations.
 
 ```ruby
 UserSignupForm.attributes # => name and email attributes
@@ -169,9 +169,9 @@ form.errors.messages # => { name: ["can't be blank"], email: ["can't be blank"] 
 
 If your model is using the uniqueness validator it will automatically convert it to the [uniqueness validator provided by Soulless](https://github.com/anthonator/soulless#uniqueness-validations).
 
-The ```#inherit_from(klass, options = {})``` method also allows you to provide options for managing inherited attributes.
+The `#inherit_from(klass, options = {})` method also allows you to provide options for managing inherited attributes.
 
-If you don't want to inherit the ```email``` attribute define it using the ```exclude``` option.
+If you don't want to inherit the `email` attribute define it using the `exclude` option.
 
 ```ruby
 class UserSignupForm < Soulless::Model
@@ -184,7 +184,7 @@ form.valid? # => false
 form.errors.messages # => { name: ["can't be blank"] }
 ```
 
-You can also flip it around if you only want the ```name``` attribute by using the ```only``` option.
+You can also flip it around if you only want the `name` attribute by using the `only` option.
 
 ```ruby
 class UserSignupForm < Soulless::Model
@@ -199,17 +199,45 @@ form.errors.messages # => { name: ["can't be blank"] }
 
 #### Available Options
 
-```only``` - Only inherit the attributes and validations for the provided attributes. Any attributes not specified will be ignored. Accepts strings, symbols and an array of strings or symbols.
+`only` - Only inherit the attributes and validations for the provided attributes. Any attributes not specified will be ignored. Accepts strings, symbols and an array of strings or symbols.
 
-```exclude``` - Don't inherit the attributes and validations for the provided attributes. Accepts strings, symbols and an array of strings or symbols.
+`exclude` - Don't inherit the attributes and validations for the provided attributes. Accepts strings, symbols and an array of strings or symbols.
 
-```skip_validators``` - Only inherit attributes. Don't inherit any validators. Accepts a boolean.
+`skip_validators` - Only inherit attributes. Don't inherit any validators. Accepts a boolean.
 
-```use_database_default``` - Use the value of the ```default``` migration option as the default value for an attribute. Accepts either a boolean (for all attributes), a string or symbol for a single attribute or an array of strings and symbols for multiple attributes.
+`use_database_default` - Use the value of the `default` migration option as the default value for an attribute. Accepts either a boolean (for all attributes), a string or symbol for a single attribute or an array of strings and symbols for multiple attributes.
 
-```additional_attributes``` - Used to specify attributes that cannot automatically be added to the form model. These are generally attributes that have been specified using ```attr_accessor```. Accepts a string, symbol or an array of strings and symbols for multiple attributes.
+`additional_attributes` - Used to specify attributes that cannot automatically be added to the form model. These are generally attributes that have been specified using `attr_accessor`. Accepts a string, symbol or an array of strings and symbols for multiple attributes.
 
-```validate_attribute_on``` - By default any validation that specifies an ```:on``` option will not be inherited. This option will allow you to inherit a validator that uses the ```:on``` with a specific value. Example usage: ```validate_password_on: :create```. Accepts a string or symbol. This option will accept any value that the Rails ```:on``` validator option can accept.
+`validate_attribute_on` - By default any validation that specifies an `:on` option will not be inherited. This option will allow you to inherit a validator that uses the `:on` with a specific value. Example usage: `validate_password_on: :create`. Accepts a string or symbol. This option will accept any value that the Rails `:on` validator option can accept.
+
+### Serialization
+
+Soulless automatically handles serializing and deserializing Soulless models
+using the standard ActiveRecord serialization methods.
+
+```ruby
+class Profile < Soulless::Model
+  attribute :first_name, String
+  attribute :last_name, String
+
+  ...
+end
+
+class User < ActiveRecord::Base
+  serialize :profile, Profile
+
+  ...
+end
+
+user = User.new
+user.profile = { first_name: 'Anthony', last_name: 'Smith' }
+user.profile # => Profile(first_name: 'Anthony', last_name: 'Smith')
+```
+
+If you want to implement your own serialization/deserialization process just
+implement your own `self.load(value)` and `self.dump(value)` methods on your
+model.
 
 ### I18n
 
