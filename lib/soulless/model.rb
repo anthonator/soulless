@@ -5,6 +5,7 @@ module Soulless
     extend ActiveModel::Translation
 
     extend Soulless::Inheritance
+    extend Soulless::Serialization
 
     include ActiveModel::AttributeMethods
     include ActiveModel::Dirty

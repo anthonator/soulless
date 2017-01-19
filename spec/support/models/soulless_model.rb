@@ -1,6 +1,6 @@
 class SoullessModel < Soulless::Model
-  attribute :name, String, default: 'Anthony'
-  attribute :email, String
+  attribute :name,                String, default: 'Anthony'
+  attribute :email,               String
   attribute :validation_callback, Boolean
 
   validates :name, presence: true

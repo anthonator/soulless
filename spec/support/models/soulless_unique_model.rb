@@ -1,3 +1,5 @@
+require 'support/models/dummy_model'
+
 class SoullessUniqueModel < Soulless::Model
   attribute :name, String
 
