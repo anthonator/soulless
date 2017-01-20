@@ -214,7 +214,8 @@ form.errors.messages # => { name: ["can't be blank"] }
 ### Serialization
 
 Soulless automatically handles serializing and deserializing Soulless models
-using the standard ActiveRecord serialization methods.
+using the standard ActiveRecord serialization methods. Serialization currently
+only handles JSON and array data types.
 
 ```ruby
 class Profile < Soulless::Model
