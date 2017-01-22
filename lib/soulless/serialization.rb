@@ -7,15 +7,13 @@ module Soulless
         end
       elsif value.is_a?(Hash)
         self.new(value)
-      elsif value.is_a?(String)
-        self.new(JSON.parse(value))
       else
         value
       end
     end
 
     def dump(value)
-      value.to_json
+      value
     end
   end
 end
