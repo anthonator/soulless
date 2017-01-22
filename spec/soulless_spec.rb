@@ -10,4 +10,11 @@ describe Soulless do
 
     expect(model.changed?).to be_falsey
   end
+
+  it 'should be equal if attributes are the same' do
+    model_1 = SoullessModel.new(email: 'anthony@sticksnleaves.com')
+    model_2 = SoullessModel.new(email: 'anthony@sticksnleaves.com')
+
+    expect(model_1).to eq model_2
+  end
 end

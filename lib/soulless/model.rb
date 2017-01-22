@@ -34,5 +34,9 @@ module Soulless
     def persisted?
       false
     end
+
+    def ==(o)
+      self.to_h == o.to_h
+    end
   end
 end
