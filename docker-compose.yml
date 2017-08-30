@@ -1,7 +1,7 @@
 version: '2'
 services:
   lib:
-    image: sticksnleaves/ruby-project:2.3
+    image: sticksnleaves/ruby-project:2.4
     command: rspec
     volumes:
       - .:/usr/src/app
