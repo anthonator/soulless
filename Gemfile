@@ -8,7 +8,7 @@ active_record_version = case ENV['ACTIVE_RECORD_VERSION'] || 'default'
 when 'master'
   { git: 'https://github.com/rails/rails.git' }
 when 'default'
-  '~> 4.2'
+  '~> 5.1'
 else
   "~> #{ENV['ACTIVE_RECORD_VERSION']}"
 end
@@ -19,7 +19,7 @@ group :test do
 end
 
 group :development do
-  gem 'activerecord', '>= 4.2.0', '< 5.1'
+  gem 'activerecord', '>= 4.2.0', '< 5.2'
 
   platforms :ruby do
     gem 'sqlite3'
