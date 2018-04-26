@@ -22,7 +22,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'activemodel', '>= 4.2.0', '< 6.0'
   spec.add_dependency 'virtus' , '~> 1.0'
 
-  spec.add_development_dependency 'bundler', '>= 0'
-  spec.add_development_dependency 'rake', '>= 0'
+  spec.add_development_dependency 'bundler', '~> 0'
+  spec.add_development_dependency 'rake', '~> 0'
   spec.add_development_dependency 'rspec', '~> 3.0'
 end
